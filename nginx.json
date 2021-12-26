@@ -1,0 +1,324 @@
+{
+  "appConfig": {},
+  "expectedArtifacts": [],
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "thakur.vaibhav23@gmail.com",
+  "limitConcurrent": false,
+  "parameterConfig": [],
+  "stages": [
+    {
+      "account": "k8-staging-1",
+      "cloudProvider": "kubernetes",
+      "manifestArtifactId": "d065b01d-0838-4d09-a4b8-53387a5ce6bf",
+      "manifests": [
+        {
+          "apiVersion": "v1",
+          "kind": "Namespace",
+          "metadata": {
+            "name": "nginx"
+          }
+        },
+        {
+          "apiVersion": "extensions/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "name": "nginx-deployment",
+            "namespace": "nginx"
+          },
+          "spec": {
+            "replicas": 1,
+            "template": {
+              "metadata": {
+                "annotations": {
+                  "prometheus.io/path": "/status/format/prometheus",
+                  "prometheus.io/port": "80",
+                  "prometheus.io/scrape": "true"
+                },
+                "labels": {
+                  "app": "nginx-server"
+                }
+              },
+              "spec": {
+                "affinity": {
+                  "podAntiAffinity": {
+                    "preferredDuringSchedulingIgnoredDuringExecution": [
+                      {
+                        "podAffinityTerm": {
+                          "labelSelector": {
+                            "matchExpressions": [
+                              {
+                                "key": "app",
+                                "operator": "In",
+                                "values": [
+                                  "nginx-server"
+                                ]
+                              }
+                            ]
+                          },
+                          "topologyKey": "kubernetes.io/hostname"
+                        },
+                        "weight": 100
+                      }
+                    ]
+                  }
+                },
+                "containers": [
+                  {
+                    "image": "vaibhavthakur/nginx-demo:${trigger.properties['TAG']}",
+                    "imagePullPolicy": "Always",
+                    "name": "nginx-demo",
+                    "ports": [
+                      {
+                        "containerPort": 80,
+                        "name": "http"
+                      }
+                    ],
+                    "resources": {
+                      "limits": {
+                        "cpu": "2500m"
+                      },
+                      "requests": {
+                        "cpu": "2000m"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "moniker": {
+        "app": "nginx"
+      },
+      "name": "Deploy (Manifest)",
+      "refId": "2",
+      "relationships": {
+        "loadBalancers": [],
+        "securityGroups": []
+      },
+      "requisiteStageRefIds": [],
+      "source": "text",
+      "stageEnabled": {
+        "expression": "\"${trigger.properties['ACTION']}\" == \"DEPLOY\"",
+        "type": "expression"
+      },
+      "type": "deployManifest"
+    },
+    {
+      "account": "k8-staging-1",
+      "cloudProvider": "kubernetes",
+      "kind": "deployment",
+      "location": "nginx",
+      "manifestArtifactId": "d065b01d-0838-4d09-a4b8-53387a5ce6bf",
+      "manifestName": "deployment nginx-deployment",
+      "name": "Patch (Manifest)",
+      "options": {
+        "mergeStrategy": "strategic",
+        "record": true
+      },
+      "patchBody": {
+        "spec": {
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "image": "vaibhavthakur/nginx-demo:${trigger.properties['TAG']}",
+                  "name": "nginx-demo"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "refId": "3",
+      "requiredArtifactIds": [],
+      "requisiteStageRefIds": [],
+      "source": "text",
+      "stageEnabled": {
+        "expression": "\"${trigger.properties['ACTION']}\" == \"PATCH\"",
+        "type": "expression"
+      },
+      "type": "patchManifest"
+    },
+    {
+      "failPipeline": true,
+      "instructions": "Please approve if Staging looks good",
+      "judgmentInputs": [],
+      "name": "Manual Judgment",
+      "notifications": [],
+      "refId": "4",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "stageEnabled": {
+        "expression": "\"${trigger.properties['ACTION']}\" == \"DEPLOY\"",
+        "type": "expression"
+      },
+      "type": "manualJudgment"
+    },
+    {
+      "account": "kubernetes-01",
+      "cloudProvider": "kubernetes",
+      "manifests": [
+        {
+          "apiVersion": "v1",
+          "kind": "Namespace",
+          "metadata": {
+            "name": "nginx"
+          }
+        },
+        {
+          "apiVersion": "extensions/v1beta1",
+          "kind": "Deployment",
+          "metadata": {
+            "name": "nginx-deployment",
+            "namespace": "nginx"
+          },
+          "spec": {
+            "replicas": 1,
+            "template": {
+              "metadata": {
+                "annotations": {
+                  "prometheus.io/path": "/status/format/prometheus",
+                  "prometheus.io/port": "80",
+                  "prometheus.io/scrape": "true"
+                },
+                "labels": {
+                  "app": "nginx-server"
+                }
+              },
+              "spec": {
+                "affinity": {
+                  "podAntiAffinity": {
+                    "preferredDuringSchedulingIgnoredDuringExecution": [
+                      {
+                        "podAffinityTerm": {
+                          "labelSelector": {
+                            "matchExpressions": [
+                              {
+                                "key": "app",
+                                "operator": "In",
+                                "values": [
+                                  "nginx-server"
+                                ]
+                              }
+                            ]
+                          },
+                          "topologyKey": "kubernetes.io/hostname"
+                        },
+                        "weight": 100
+                      }
+                    ]
+                  }
+                },
+                "containers": [
+                  {
+                    "image": "vaibhavthakur/nginx-demo:${trigger.properties['TAG']}",
+                    "imagePullPolicy": "Always",
+                    "name": "nginx-demo",
+                    "ports": [
+                      {
+                        "containerPort": 80,
+                        "name": "http"
+                      }
+                    ],
+                    "resources": {
+                      "limits": {
+                        "cpu": "2500m"
+                      },
+                      "requests": {
+                        "cpu": "2000m"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "moniker": {
+        "app": "nginx"
+      },
+      "name": "Deploy (Manifest)",
+      "refId": "5",
+      "relationships": {
+        "loadBalancers": [],
+        "securityGroups": []
+      },
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "source": "text",
+      "stageEnabled": {
+        "expression": "\"${trigger.properties['ACTION']}\" == \"DEPLOY\"",
+        "type": "expression"
+      },
+      "type": "deployManifest"
+    },
+    {
+      "failPipeline": true,
+      "instructions": "Please approve if staging looks good.",
+      "judgmentInputs": [],
+      "name": "Manual Judgment",
+      "notifications": [],
+      "refId": "6",
+      "requisiteStageRefIds": [
+        "3"
+      ],
+      "stageEnabled": {
+        "expression": "\"${trigger.properties['ACTION']}\" == \"PATCH\"",
+        "type": "expression"
+      },
+      "type": "manualJudgment"
+    },
+    {
+      "account": "k8-staging-1",
+      "cloudProvider": "kubernetes",
+      "kind": "deployment",
+      "location": "nginx",
+      "manifestName": "deployment nginx-deployment",
+      "name": "Patch (Manifest)",
+      "options": {
+        "mergeStrategy": "strategic",
+        "record": true
+      },
+      "patchBody": {
+        "spec": {
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "image": "vaibhavthakur/nginx-demo:${trigger.properties['TAG']}",
+                  "name": "nginx-demo"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "refId": "7",
+      "requisiteStageRefIds": [
+        "6"
+      ],
+      "source": "text",
+      "stageEnabled": {
+        "expression": "\"${trigger.properties['ACTION']}\" == \"PATCH\"",
+        "type": "expression"
+      },
+      "type": "patchManifest"
+    }
+  ],
+  "triggers": [
+    {
+      "enabled": true,
+      "expectedArtifactIds": [],
+      "job": "<JENKINS-JOB-NAME>",
+      "master": "<JENKINS-ENDPOINT>",
+      "propertyFile": "trigger.properties",
+      "type": "jenkins"
+    }
+  ],
+  "updateTs": "1549950567155"
+}
