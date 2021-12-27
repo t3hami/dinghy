@@ -39,6 +39,11 @@
           "name": "one",
           "type": "wait",
           "waitTime": 10
+        },
+        {
+          "name": "two",
+          "type": "wait",
+          "waitTime": 10
         }
       ]
     }
