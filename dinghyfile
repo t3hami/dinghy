@@ -10,6 +10,16 @@
         {{ module "wait.stage.module" }} // Module created in dinghy-templates repo
       ],
       "triggers": []
+    },
+    {
+      "application": "spinnaker-test-app",
+      "keepWaitingPipelines": false,
+      "limitConcurrent": true,
+      "name": "Made By Armory Pipeline Templates New",
+      "stages": [
+        {{ module "wait.stage.module" }} // Module created in dinghy-templates repo
+      ],
+      "triggers": []
     }
   ]
 }
