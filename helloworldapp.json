@@ -1,0 +1,46 @@
+{
+  "application": "helloworldapp",
+  "globals": {
+    "save_app_on_update": true
+  },
+  "spec": {
+    "appmetadata": {
+      "dataSources": {
+        "enabled": [
+          "securityGroups",
+          "loadBalancers",
+          "executions",
+          "serverGroups"
+        ],
+        "disabled": [
+          "canaryConfigs"
+        ]
+      },
+      "cloudProviders": [
+        "kubernetes",
+        "aws"
+      ],
+      "customBanners": [
+        {
+          "backgroundColor": "var(--color-alert)",
+          "enabled": true,
+          "text": "Your custom banner text",
+          "textColor": "var(--color-text-on-dark)"
+        }
+      ]
+    }
+  },
+  "pipelines": [
+    {
+      "application": "helloworldapp",
+      "name": "my-pipeline-name",
+      "stages": [
+        {
+          "name": "one",
+          "type": "wait",
+          "waitTime": 10
+        }
+      ]
+    }
+  ]
+}
