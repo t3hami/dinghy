@@ -1,51 +1,15 @@
 {
-  "application": "helloworldapp",
-  "globals": {
-    "save_app_on_update": true
-  },
-  "spec": {
-    "appmetadata": {
-      "dataSources": {
-        "enabled": [
-          "securityGroups",
-          "loadBalancers",
-          "executions",
-          "serverGroups"
-        ],
-        "disabled": [
-          "canaryConfigs"
-        ]
-      },
-      "cloudProviders": [
-        "kubernetes",
-        "aws"
-      ],
-      "customBanners": [
-        {
-          "backgroundColor": "var(--color-alert)",
-          "enabled": true,
-          "text": "Your custom banner text",
-          "textColor": "var(--color-text-on-dark)"
-        }
-      ]
-    }
-  },
+  "application": "spinnaker-test-app",
   "pipelines": [
     {
-      "application": "helloworldapp",
-      "name": "my-pipeline-name",
+      "application": "spinnaker-test-app",
+      "keepWaitingPipelines": false,
+      "limitConcurrent": true,
+      "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {
-          "name": "one",
-          "type": "wait",
-          "waitTime": 10
-        },
-        {
-          "name": "two",
-          "type": "wait",
-          "waitTime": 10
-        }
-      ]
+        {{ module "wait.stage.module" }} // Module created in dinghy-templates repo
+      ],
+      "triggers": []
     }
   ]
 }
