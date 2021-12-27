@@ -7,7 +7,7 @@
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
       "stages": [
-        {{ module "wait.stage.module" }} // Module created in dinghy-templates repo
+        {{ module "wait.stage.module" }}
       ],
       "triggers": []
     },
@@ -17,7 +17,7 @@
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates New",
       "stages": [
-        {{ module "wait.stage.module" }} // Module created in dinghy-templates repo
+        {{ module "wait.stage.module" }}
       ],
       "triggers": []
     }
