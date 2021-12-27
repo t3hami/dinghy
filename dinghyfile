@@ -15,7 +15,7 @@
       "application": "spinnaker-test-app",
       "keepWaitingPipelines": false,
       "limitConcurrent": true,
-      "name": "Made By Armory Pipeline Templates New",
+      "name": "Made By Armory Pipeline Templates PR 4",
       "stages": [
         {{ module "wait.stage.module" }}
       ],
