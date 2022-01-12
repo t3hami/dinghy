@@ -12,14 +12,15 @@
       "triggers": []
     },
     {
-      "application": "spinnaker-test-app",
-      "keepWaitingPipelines": false,
-      "limitConcurrent": true,
-      "name": "Made By Armory Pipeline Templates PR 4",
+      "application": "spinnaker-test-app-dinghy",
+      "name": "spinnaker-test-app-dinghy-pipeline-1",
       "stages": [
-        {{ module "wait.stage.module" }}
-      ],
-      "triggers": []
+        {
+          "name": "one",
+          "type": "wait",
+          "waitTime": 10
+        }
+      ]
     }
   ]
 }
