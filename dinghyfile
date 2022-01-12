@@ -2,7 +2,7 @@
   "application": "spinnaker-test-app-dinghy",
   "pipelines": [
     {
-      "application": "spinnaker-test-app",
+      "application": "spinnaker-test-app-dinghy",
       "keepWaitingPipelines": false,
       "limitConcurrent": true,
       "name": "Made By Armory Pipeline Templates",
